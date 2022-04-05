@@ -1,5 +1,6 @@
 package filters;
 
+import dataaccess.UserDB;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -27,12 +28,14 @@ public class AdminFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
        
+        HttpSession session = httpRequest.getSession();
         
-        User user = new User();
+        String email = (String) session.getAttribute("email");
         
-        Role role = user.getRole();
+        UserDB userDB = new UserDB();
+        User user = userDB.get(email);
         
-        int roleId = role.getRoleId();
+        int roleId = user.getRole().getRoleId();
 
         
         //Check if user is an admin or not
